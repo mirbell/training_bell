@@ -1,0 +1,40 @@
+---
+title: "Intro to Quarto"
+format: html
+
+---
+
+## Header level 2
+
+Use the visual editor to create a table that will display like this below
+
+| Col1   | Col2        | Col3     |
+|--------|-------------|----------|
+| item 1 | description | add text |
+| item 2 |             |          |
+| item 3 |             |          |
+
+#### Header level 4
+
+**This is bold text**
+
+*this is italic text*
+
+*also italic*
+
+**also bold**
+
+This is a very important fact 
+
+## Working with R code in Quarto
+
+```{r}
+x <-4*8
+
+heights_ft <- c(5.2, 6.0, 5.7)
+
+x
+
+heights_ft
+```
+
