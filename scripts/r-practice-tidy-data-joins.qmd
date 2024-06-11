@@ -16,17 +16,150 @@ library(lubridate) # for bonus question
 ```
 ```{r}
 
-bird<- X52_pp52_birds_1
-survey<-X52_pp52_surveys_1
-taxa<-X52_pp52_taxalist_1
-sites<-X52_pp52_sites_1
+# read in data using download links
+bird_observations <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=53edaa7a0e083013d9bf20322db1780e")
+surveys <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=b2466fa5cb5ed7ee1ea91398fc291c59")
+sites <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=81bf72420e69077097fb0790dcdc63a6")
+taxalist <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=58f863b7e3066e68536a9cacdc7bd58e")
+
 
 
 ```
+
+##Looking at the data
+
+```{r}
+head(bird_observations)
+head(surveys)
+head(taxalist)
+head(sites)
+
+glimpse(bird_observations)
+glimpse(surveys)
+glimpse(taxalist)
+glimpse(sites)
+
+summary(bird_observations)
+summary(surveys)
+summary(taxalist)
+summary(sites)
+
+names(bird_observations)
+
+unique(bird_observations$species_id)
+
+```
+
+
+### Subsetting data
+
+
+```{r}
+birds_subset <- bird_observations %>% 
+  filter(species_id %in% c("BHCO", "RWBL")) %>% 
+  filter(site_id %in% c("LI-W", "NU-C"))
+```
+
+
+
+##8.4 Use left_join() to merge birds_subset with the tables sites
+Question 4a
+First, answer: what do you expect the outcome data frame when doing left_join() between birds_subset and sites to look like? What observations do you expect in the outcome data frame.
+
+Everything in a left join, the "left" data set is kept in full. 
+
+Write this in your Quarto Document or tell a neighbor.
+
+Answer
+Qustion 4b
+Use a left join to update birds_subset so that it also includes sites information. For each join, include an explicit argument saying which key you are joining by (even if it will just assume the correct one for you). Store the updated data frame as birds_left. Make sure to look at the output - is what it contains consistent with what you expected it to contain?
+
+```{r}
+
+
+
+birds_left <- left_join(x = birds_subset, y = sites, by = "site_id")
+
+```
+
+
+
+
+
+## Full join
+
+
+In a full join all the data will be made into one, or joining fully. 
+
+```{r}
+
+birds_full <- full_join( x = birds_subset, y = sites, by = "site_id")
+
+```
+
+
+
+## Inner join
 
 
 
 ```{r}
+birds_inner <- inner_join(x = birds_subset, y = taxalist, by = "species_id" )
+
+
+birds_inner_left <- left_join(x = birds_subset, y = taxalist, by = "species_id")
 
 ```
+
+## 8.7 Wrangle bird_observations data and merge the data with all the other tables (sites, surveys, and taxalist)
+
+
+```{r}
+bird_observations<- bird_observations %>% 
+  rename(birds_obs_notes = notes)
+
+```
+
+
+
+Create a subset that contains all observations in the birds_observations data frame,
+then join the taxalist, sites and surveys tables to it,
+and finally limit to only columns survey_date, common_name, park_name, bird_count, and observer.
+Hint: What function do you use to subset data by columns?
+
+```{r}
+
+bird_obs_subset <- bird_observations %>% 
+  full_join(y = taxalist, by = "species_id") %>% 
+  full_join(y = sites, by = "site_id") %>% 
+  full_join(y = surveys, by = c("site_id", "survey_id")) %>%  
+  select(survey_date, common_name, park_name, bird_count, observer)
+
+```
+
+## Continued exploration
+
+```{r}
+
+unique(bird_obs_subset$observer)
+
+```
+
+
+7 obs and Josh Burns is the only one with the full name written out, the rest are initial and then last name
+
+## Replacing Josh Burns with J. Burns
+
+```{r}
+bird_obs_subset<- bird_obs_subset %>% 
+  mutate(observer = if_else(condition = observer =="Josh Burns", 
+                           true = "J. Burns",
+                           false = observer)) 
+
+unique(bird_obs_subset$observer)
+
+```
+
+
+
 
