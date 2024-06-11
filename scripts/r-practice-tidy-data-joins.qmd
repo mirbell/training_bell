@@ -1,0 +1,32 @@
+---
+title: "R Practice: Tidy Data and Joins"
+format: html
+---
+
+##Libraries and data
+
+```{r}
+library(readr)
+library(dplyr)
+library(lubridate) # for bonus question
+
+# Quick question: Do you get a message after loading the libraries? What is it telling you? Talk to your neighbor about it or write a note in your qmd.
+
+# Yes, there is a message because we didn't indicate "false" at start up. It is telling us about the package lubridate that has been loaded. 
+```
+```{r}
+
+bird<- X52_pp52_birds_1
+survey<-X52_pp52_surveys_1
+taxa<-X52_pp52_taxalist_1
+sites<-X52_pp52_sites_1
+
+
+```
+
+
+
+```{r}
+
+```
+
