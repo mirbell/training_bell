@@ -160,6 +160,28 @@ unique(bird_obs_subset$observer)
 
 ```
 
+Use lubridate::month() to add a new column to bird_obs_subset called survey_month, containing only the month number. 
+Then, convert the month number to a factor (again within mutate()).
+Use dplyr::relocate() to move the new survey_month column to immediately after the survey_date column. You can do this in a separate code chunk, or pipe straight into it from your existing code.
+
+Filter to only include parks Lindo, Orme, Palomino, and Sonrisa.
+
+Find the total number of birds observed by park and month (Hint: You can use group_by() and summarize()).
+
+```{r}
+
+bird_obs_subset<- bird_obs_subset %>% 
+  mutate(survey_month = lubridate::month(survey_date)) %>% 
+  #select(-`lubridate::month(survey_date)`) %>% 
+  mutate(survey_month = as.factor(survey_month)) %>% 
+  dplyr::relocate(survey_month, .after = survey_date) %>% 
+  filter(park_name %in% c("Lindo", "Orme", "Palomino", "Sonrisa")) %>% 
+  group_by(park_name, survey_month) %>% 
+  summarize(tot_bird_count_month = n())
+
+```
+
+
 
 
 
