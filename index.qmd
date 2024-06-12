@@ -7,8 +7,8 @@ format: html
 
 - [Introduction to Literate Analysis Using Quarto](scripts/literate-analysis.html) 
 - [Cleaning and Wrangling data](scripts/Data-wrangling.html)
-- Data Visualization
-- Woeking with Spatial Data
+- [Data Visualization](scripts/data-viz)
+- [Working with Spatial Data](scripts/spatial-data-files)
 
 ## Course Practice Session
 
