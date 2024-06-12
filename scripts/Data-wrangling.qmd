@@ -39,7 +39,7 @@ unique(catch_original$Region)
 
 #open data frame
 
-View(catch_original)
+#View(catch_original)
 
 ```
 
@@ -193,11 +193,11 @@ head(n_region)
 
 ```{r}
 
-catch_millions <- catch_long %>% 
-  filter(catch > 1000000)
+#catch_millions <- catch_long %>% 
+  #filter(catch > 1000000)
 
-catch_sse<- catch_long %>% 
-  filter(Region == "SSE" $ species == "Chinook")
+#catch_sse<- catch_long %>% 
+  #filter(Region == "SSE" $ species == "Chinook")
 
 ```
 
@@ -269,6 +269,23 @@ dates_df %>%
 ```
 
 
+```{r}
+catch_original <- read_csv("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1")
+
+mean_region <- catch_original %>%
+  select(-All, -notesRegCode) %>% 
+  mutate(Chinook = if_else(Chinook == "I", "1", Chinook)) %>% 
+  mutate(Chinook = as.numeric(Chinook)) %>% 
+  pivot_longer(-c(Region, Year), 
+               names_to = "species", 
+               values_to = "catch") %>%
+  mutate(catch = catch*1000) %>% 
+  group_by(Region) %>% 
+  summarize(mean_catch = mean(catch)) %>% 
+  arrange(desc(mean_catch))
+
+head(mean_region)
+```
 
 
 
